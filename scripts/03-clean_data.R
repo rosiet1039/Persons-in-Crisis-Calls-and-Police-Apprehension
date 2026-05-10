@@ -5,7 +5,11 @@
 # Date: 10 May 2026
 # Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: The 'tidyverse' package must be installed
+# Pre-requisites:
+#   - The 'tidyverse' package must be installed
+#   - 02-download_data.R must have been run
+# Any other information needed? Make sure you are in the
+#   'persons_in_crisis_calls' rproj
 
 #### Workspace setup ####
 library(tidyverse)

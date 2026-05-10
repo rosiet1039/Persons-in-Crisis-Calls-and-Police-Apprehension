@@ -6,6 +6,8 @@
 # Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: The 'tidyverse' package must be installed
+# Any other information needed? Make sure you are in the
+#   'persons_in_crisis_calls' rproj
 
 #### Workspace setup ####
 library(tidyverse)

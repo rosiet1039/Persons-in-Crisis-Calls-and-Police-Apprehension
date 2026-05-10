@@ -7,6 +7,8 @@
 # License: MIT
 # Pre-requisites: The 'tidyverse', 'opendatatoronto', 'readxl', 'writexl',
 #   'readr', and 'rio' packages must be installed
+# Any other information needed? Make sure you are in the
+#   'persons_in_crisis_calls' rproj
 
 #### Workspace setup ####
 library(opendatatoronto)
