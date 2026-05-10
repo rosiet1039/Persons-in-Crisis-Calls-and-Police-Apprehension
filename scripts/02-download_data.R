@@ -6,7 +6,7 @@
 # Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Install opendatatoronto, tidyverse, readxl, writexl,
-# readr, and rio libraries
+# readr, and rio packages
 
 
 #### Workspace setup ####

@@ -5,7 +5,7 @@
 # Date: 10 May 2026
 # Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Install tidyverse library
+# Pre-requisites: Install tidyverse packages
 
 #### Workspace setup ####
 library(tidyverse)
