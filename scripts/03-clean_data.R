@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the raw Persons in Crisis Calls for Service Attended and
+#   Neighbourhood Profiles data from Open Data Toronto
+# Author: Rohan Alexander, Rosie Topp
+# Date: 10 May 2026
+# Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Install tidyverse library
 
 #### Workspace setup ####
 library(tidyverse)
