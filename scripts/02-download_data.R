@@ -1,26 +1,50 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Downloads and saves the Persons in Crisis Calls for Service Attended
+#   data from OpenData Toronto
+# Author: Rohan Alexander, Rosie Topp
+# Date: 09 May 2026
+# Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Download opendatatoronto and tidyverse packages
 
 
 #### Workspace setup ####
 library(opendatatoronto)
 library(tidyverse)
-# [...UPDATE THIS...]
+library(readxl)
+library(writexl)
+library(readr)
+library(rio)
 
 #### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
+persons_in_crisis_package <-
+  search_packages("Persons in Crisis Calls for Service Attended")
 
+persons_in_crisis_resources <- persons_in_crisis_package |>
+  list_package_resources()
+
+persons_in_crisis_data <- persons_in_crisis_resources |>
+  head(1) |>
+  get_resource()
+
+neighbourhood_package <-
+  search_packages("Neighbourhood Profiles")
+
+neighbourhood_resources <- neighbourhood_package |>
+  list_package_resources()
+
+neighbourhood_excel <- neighbourhood_resources |>
+  head(1) |>
+  get_resource()
 
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
+write_csv(persons_in_crisis_data,
+    "C:/Users/owner/starter_folder/data/01-raw_data/raw_persons_in_crisis.csv")
 
-         
+write_xlsx(neighbourhood_excel,
+        "C:/Users/owner/starter_folder/data/01-raw_data/raw_neighbourhood.xlsx")
+
+convert("C:/Users/owner/starter_folder/data/01-raw_data/raw_neighbourhood.xlsx",
+        "C:/Users/owner/starter_folder/data/01-raw_data/raw_neighbourhood.csv")
+
