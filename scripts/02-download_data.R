@@ -5,9 +5,8 @@
 # Date: 10 May 2026
 # Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Install opendatatoronto, tidyverse, readxl, writexl,
-# readr, and rio packages
-
+# Pre-requisites: The 'tidyverse', 'opendatatoronto', 'readxl', 'writexl',
+#   'readr', and 'rio' packages must be installed
 
 #### Workspace setup ####
 library(opendatatoronto)
