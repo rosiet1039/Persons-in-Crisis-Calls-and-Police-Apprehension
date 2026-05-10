@@ -1,11 +1,12 @@
 #### Preamble ####
 # Purpose: Downloads and saves the Persons in Crisis Calls for Service Attended
-#   data from OpenData Toronto
+# and Neighbourhood Profiles data from Open Data Toronto
 # Author: Rohan Alexander, Rosie Topp
-# Date: 09 May 2026
+# Date: 10 May 2026
 # Contact: rosie.topp@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Download opendatatoronto and tidyverse packages
+# Pre-requisites: Install opendatatoronto, tidyverse, readxl, writexl,
+# readr, and rio libraries
 
 
 #### Workspace setup ####
