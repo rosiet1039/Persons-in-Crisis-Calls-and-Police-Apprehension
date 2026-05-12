@@ -13,6 +13,7 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(readr)
 
 #### Clean data ####
 raw_persons_in_crisis <-
@@ -27,27 +28,43 @@ cleaned_persons_in_crisis <-
   raw_persons_in_crisis |>
   janitor::clean_names() |>
   select(event_year, event_month, event_dow, event_hour, event_type, division,
-         apprehension_made, hood_158, neighbourhood_158) |>
-  filter(hood_158 != "NSA") |>
+         apprehension_made, hood_140) |>
+  filter(hood_140 != "NSA") |>
   tidyr::drop_na()
 
 cleaned_neighbourhood <-
   raw_neighbourhood |>
   janitor::clean_names() |>
-  tidyr::drop_na()
+  select(5:last_col())
+  
 
 no_zeros <- 
-  cleaned_persons_in_crisis |> mutate(hood_158 = sub("^0+", "", hood_158))
+  cleaned_persons_in_crisis |> mutate(hood_140 = sub("^0+", "", hood_140))
 
 transposed_neigh <- as.data.frame(t(cleaned_neighbourhood))
 
 colnames(transposed_neigh) <- transposed_neigh[1,]
-transposed_neigh_sliced <- transposed_neigh[-1, ]
+
+transposed_neigh_cleaned <-
+  transposed_neigh |>
+  janitor::clean_names() |>
+  select(neighbourhood_number, neither_english_nor_french, 	
+         total_income_statistics_in_2015_for_the_population_aged_15_years_and_over_in_private_households,
+         population_2016)
+
+transposed_neigh_cleaned$neighbourhood_number <-
+  parse_number(transposed_neigh_cleaned$neighbourhood_number)
+transposed_neigh_cleaned$neither_english_nor_french <-
+  parse_number(transposed_neigh_cleaned$neither_english_nor_french)
+transposed_neigh_cleaned$total_income_statistics_in_2015_for_the_population_aged_15_years_and_over_in_private_households <-
+  parse_number(transposed_neigh_cleaned$total_income_statistics_in_2015_for_the_population_aged_15_years_and_over_in_private_households)
+transposed_neigh_cleaned$population_2016 <-
+  parse_number(transposed_neigh_cleaned$population_2016)
 
 #### Save data ####
 write_csv(no_zeros,
 "C:/Users/owner/starter_folder/data/02-analysis_data/persons_in_crisis_data.csv")
 
-write_csv(transposed_neigh_sliced,
-          "C:/Users/owner/starter_folder/data/02-analysis_data/neighbourhood_data.csv")
+write_csv(transposed_neigh_cleaned,
+  "C:/Users/owner/starter_folder/data/02-analysis_data/neighbourhood_data.csv")
 
