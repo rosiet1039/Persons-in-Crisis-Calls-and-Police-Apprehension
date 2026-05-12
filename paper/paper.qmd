@@ -2,12 +2,11 @@
 title: "Persons in Crisis Calls and Police Apprehension"
 subtitle: "Exploring the Relationship Between Volume of Calls and Apprehensions Made"
 author: 
-  - First author
-  - Another author
+  - Rosemarie Topp
 thanks: "Code and data are available at: [https://github.com/rosiet1039/Persons-in-Crisis-Calls-and-Police-Apprehension](https://github.com/rosiet1039/Persons-in-Crisis-Calls-and-Police-Apprehension)."
 date: today
 date-format: long
-abstract: "The Toronto Police Service is responsible for attending to high volume of Person in Crisis calls. There is much debate over whether or not they are the appropriate group to be dealing with situations involving mental illness and substance use. This paper provides evidence of a link between high volumes of calls and low proportions of apprehensions made across police divisions, which could indicate that over tasking police officers could lead to a mishandling of mental health crises."
+abstract: "The Toronto Police Service is responsible for attending to high volume of Person in Crisis calls. There is much debate over whether or not they are the appropriate group to be dealing with situations involving mental illness and substance use. This paper provides evidence of a link between high volumes of calls and low proportions of apprehensions made across police divisions, which could indicate that over tasking police officers may lead to a mishandling of mental health crises."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -20,6 +19,9 @@ bibliography: references.bib
 
 library(tidyverse)
 library(knitr)
+library(readr)
+library(dplyr)
+library(ggplot2)
 pic <- read.csv("C:/Users/owner/starter_folder/data/02-analysis_data/persons_in_crisis_data.csv")
 ```
 
@@ -32,7 +34,7 @@ TPS uploads data on PIC calls for service that have been attended, including inf
 
 The city of Toronto is currently divided into 158 different neighbourhoods, however this paper will be looking at the 140 neighbourhood division which was in place when the data was collected [@citeNeighbourhoodProfiles]. The TPS is divided into 17 different divisions which each cover some subset of these neighbourhoods [@citeDivisions].
 
-This paper will go through the Persons in Crisis Calls for Service Attended data set available on Open Data Toronto. @sec-data will describe the variables of interest, looking at the differences in call volume and apprehension rates across police divisions, as well as across Toronto's neighbourhoods.
+This paper will go through the Persons in Crisis Calls for Service Attended data set available on Open Data Toronto. @sec-data will describe the variables of interest, looking at the differences in call volume and apprehension rates across police divisions, as well as across Toronto's neighbourhoods. @sec-discussion will discuss findings in further detail, and @sec-limitations will briefly point out some limitations and ideas for further research.
 
 
 
@@ -41,11 +43,11 @@ This paper will go through the Persons in Crisis Calls for Service Attended data
 
 ## Overview
 
-The data analyzed in this paper comes from Open Data Toronto, and was accessed through the `opendatatoronto` package [@citeOpenData] [@citeOpenDataR]. All handling of data was done using the statistical programming language R [@citeR]. Packages `tidyverse` [@citeTidyverse], `readr` [@citeReadr], and `dplyr` [@citeDplyr] were used to clean, analyze, and simulate data. All plots were created using `ggplot2` [@citeGgplot2]. `knitr` was used to format this document [@citeKnitr].
+The data analyzed in this paper comes from Open Data Toronto, and was accessed through the `opendatatoronto` package [@citeOpenData] [@citeOpenDataR]. All handling of data was done using the statistical programming language R [@citeR]. Packages `tidyverse` [@citeTidyverse], `readr` [@citeReadr], and `dplyr` [@citeDplyr] were used to clean, analyze, and simulate data. All plots were created using `ggplot2` [@citeGgplot2]. `knitr` was used to help format this document [@citeKnitr].
 
 ## Measurement
 
-The Persons in Crisis Calls for Service Attended dataset contains information about every PIC call attended by an officer of the TPS from 1 January 2014 to 12 June 2015. When a call is attended, the date, day of the week, and hour, and neighbourhood (in both the 140 and 158 neighbourhood systems [@citeNeighbourhoodProfiles]) of the event is recorded, as well as the TPS division that was in attendance. These events are are aggregated into three "types": Person in Crisis, Suicide-related, and Overdose, and this is also recorded. Additionally, whether or not the PIC was apprehended and whether or not an occurrence was made is noted. This paper will be focusing on three variables in particular: the TPS division, the neighbourhood, and whether or not the event resulted in an apprehension.
+The Persons in Crisis Calls for Service Attended dataset contains information about every PIC call attended by an officer of the TPS from 1 January 2014 to 12 June 2015. When a call is attended, the date, day of the week, hour, and neighbourhood (in both the 140 and 158 neighbourhood systems [@citeNeighbourhoodProfiles]) of the event is recorded, as well as the TPS division that was in attendance. These events are are aggregated into three "types": Person in Crisis, Suicide-related, and Overdose, and this is also recorded. Additionally, whether or not the PIC was apprehended and whether or not an occurrence was made is noted. This paper will be focusing on three variables in particular: the TPS division, the neighbourhood, and whether or not the event resulted in an apprehension.
 
 ## Variables of Interest
 
@@ -68,7 +70,7 @@ ggplot(pic, aes(x = division)) +
         plot.title = element_text(colour = "#393e38", family = "serif", vjust = 1),
         axis.title = element_text(colour = "#393e38", family = "serif"),
         legend.title = element_text(colour = "#393e38", family = "serif"),
-        axis.text.x = element_text(colour = "#989394", vjust = 10),
+        axis.text.x = element_text(colour = "#989394", vjust = 5),
         axis.text.y = element_text(colour = "#989394", hjust = 1)
         ) +
   labs(title = "Number of Calls Attended by Division",
@@ -84,27 +86,27 @@ From the late 1990s to very recently in 2022, Toronto was divided into 140 neigh
 ```{r}
 #| label: fig-neighbourhoods
 #| fig-cap: PIC Calls for Service Attended by Neighbourhoods
+#| fig-subcap: ¹73 - Moss Park (Division 51), 75 - Church-Yonge Corridor (Division 51), 76 - Bay Street Corridor (Division 52).
 #| echo: false
 
 pic |>
   group_by(hood_140) |>
   summarize(n_calls = n()) |>
   top_n(3, n_calls) |>
-  kable("latex", booktabs = TRUE, col.names = c("Neighbourhood*", "Number of PIC Calls"))
+  kable(
+    "latex",
+    booktabs = TRUE,
+    col.names = c("¹Neighbourhood", "Number of PIC Calls"))
 ```
-*Neighbourhood names [@citeNeighbourhoodProfiles] [@citeDivisions]:
 
-73 - Moss Park (Division 51)
 
-75 - Church-Young Corridor (Division 51)
-
-76 - Bay Street Corridor (Division 52)
+*Neighbourhood names: 73 - Moss Park (Division 51), 75 - Church-Yonge Corridor (Division 51), 76 - Bay Street Corridor (Division 52).
 
 ### Apprehension Made
 
-A subset of the PIC calls result in the person in question being apprehended, usually to be admitted to a psychiatric facility [@citeTPS]. This occurs when the officer believes the person in crisis poses a danger to themself or others. Overall, `{r}mean(pic$apprehension_made == "Yes")`% of the calls resulted in an apprehension.
+A subset of the PIC calls result in the person in question being apprehended, usually to be admitted to a psychiatric facility [@citeTPS]. This occurs when the officer believes the person in crisis poses a danger to themself or others. Overall, `r round(100 * mean(pic$apprehension_made == "Yes"), 1)`% of the calls resulted in an apprehension.
 
-There appears to be a negative relationship between the number of calls overall and the proportion of calls resulting in an apprehension, both when grouping by neighbourhood and by division. We can see that division 51, which attended the highest overall number of calls, has the lowest proportion of apprehensions made. Conversely, division 42 has the lowest calls attended and the highest proportion of apprehensions.
+There appears to be a negative relationship between the number of calls overall and the proportion of calls resulting in an apprehension, both when grouping by neighbourhood @-neighbourhood_apprehensions and by division @fig-divisions_apprehensions. We can see that division 51, which attended the highest overall number of calls, has the lowest proportion of apprehensions made. Conversely, division 42 has the lowest calls attended and the highest proportion of apprehensions.
 
 There could be confounding variables involved in this relationship, and more research should be done on this front.
 
@@ -112,6 +114,7 @@ There could be confounding variables involved in this relationship, and more res
 #| label: fig-divisions_apprehensions
 #| fig-cap: Number of Calls v Proportion of Calls with Apprehension Made by Division
 #| echo: false
+#| message: false
 
 pic |>
   group_by(division) |>
@@ -139,6 +142,7 @@ pic |>
 #| label: fig-neighbourhood_apprehensions
 #| fig-cap: Number of Calls v Proportion of Calls with Apprehension Made by Neighbourhood
 #| echo: false
+#| message: false
 
 pic |>
   group_by(hood_140) |>
@@ -157,21 +161,21 @@ pic |>
         axis.text.y = element_text(colour = "#989394", hjust = 1)) +
   labs(title = "Number of Calls v Proportion of Calls with Apprehension Made by Neighbourhood",
        x = "Number of Calls", y = "Proportion with Apprehension Made") +
-    annotate("text", x = 1400, y = 0.16, label = "Church-Young Corridor (75)", colour = "#393e38", size = 3) +
+    annotate("text", x = 1400, y = 0.16, label = "Church-Yonge Corridor (75)", colour = "#393e38", size = 3) +
     annotate("text", x = 1350, y = 0.125, label = "Moss Park (73)", colour = "#393e38", size = 3)
 ```
 
 \newpage
 
-## Discussion
+## Discussion {#sec-discussion}
 
-There is much debate over whether or not police should be able to apprehend those experiencing a mental health crisis. Many have stated that these apprehensions are deeply traumatic and further escalate a situation in which the person in crisis has no real intent to cause harm [@citeRandall]. Moreover, police involvement in a crisis situation can even result in unnecessary death [@citeAghasi]. That said, many feel the lives of unarmed mental health professionals would be at risk were they to enter a situation with a violent individual in crisis [@citeNasser].
+There is much debate over whether or not police should be responsible for apprehending those experiencing a mental health crisis. Many have stated that these apprehensions are deeply traumatic and further escalate a situation in which the person in crisis has no real intent to cause harm [@citeRandall]. Moreover, police involvement in a crisis situation can even result in unnecessary death [@citeAghasi]. That said, many feel the lives of unarmed mental health professionals would be at risk were they to enter a situation with a violent individual in crisis [@citeNasser].
 
-Whether or not the TPS should be handling these crises, the proportion of apprehension should ideally be the same across neighbourhoods and divisions. The negative relationship between this proportion and the total volume of calls could indicate an overwhelmed and over tasked police force that simply does not have the time to deal with mental health crises in the appropriate manner. According to the Mental Health Act, officers must stay with an apprehended individual until they are admitted into a psychiatric facility [@citeMHA]. This takes up a significant proportion of their time; a study on the Edmonton police force found that over a three month period, officers spent around 1,500 hours in hospitals, approximately 54% of which were spent dealing with persons with mental illness [@citeGriffiths]. Across Canada, about one in five encounters with police involve persons struggling with mental illness or substance use [@citeGoC].
+Whether or not the TPS should be handling these crises, the proportion of apprehension should ideally be approximately the same across neighbourhoods and divisions. The negative relationship between this proportion and the total volume of calls could indicate an overwhelmed and over tasked police force that simply does not have the time to deal with mental health crises in the appropriate manner. According to the Mental Health Act, officers must stay with an apprehended individual until they are admitted into a psychiatric facility [@citeMHA]. This takes up a significant proportion of their time; a study on the Edmonton police force found that over a three month period, officers spent around 1,500 hours in hospitals, approximately 54% of which were spent dealing with persons with mental illness [@citeGriffiths]. Across Canada, about one in five encounters with police involve persons struggling with mental illness or substance use [@citeGoC].
 
 This data provides further evidence that the Toronto Police Services may not be the appropriate group to handle Persons in Crisis. Not only has this delegation been shown to further traumatize those involved, often escalating situations to dangerous levels, but it also takes up police hours that could be spent on situations better suited for armed officers. It is particularly concerning if this over tasking is causing the police to mishandle mental health crises.
 
-## Limitations and Further Research
+## Limitations and Further Research {#sec-limitations}
 
 There could be confounding variables involved in the relationships analyzed in this paper. In particular, this analysis did not look at Neighbourhood Profile data, which can be found on Open Data Toronto. Variables such as neighbourhood income, non-english languages spoken, and race could play a significant role. Further research should be done in order to better understand the causes of police apprehension in PIC situations.
 
